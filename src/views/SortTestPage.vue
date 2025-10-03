@@ -1,6 +1,6 @@
 <script setup>
     const props = defineProps(['quantidade'])
-    import sortObjects from '../tools/sort';
+    import mountSequence from '../tools/mountSequence';
 
     const obj = [
         {
@@ -20,9 +20,41 @@
             name: 'triangle'
         },
     ]
+
+    const moutSequence = mountSequence(props.quantidade, 10, obj);
 </script>
 <template>
-    <p v-for="item of sortObjects(props.quantidade, obj)">
-        {{ item.name }}
-    </p>
+    <section>
+        <div>
+            <p v-for="item of moutSequence.sequence">
+                {{ item.object.name }}
+            </p>
+        </div>
+        <div>
+            <p v-for="item of moutSequence.itenSequence">
+                {{ item.name }}
+            </p>
+        </div>
+        <p>
+            Correct: {{ moutSequence.correctResponse.object.name }}
+        </p>
+    </section>
 </template>
+<style scoped>
+    section{
+        display: flex;
+        flex-direction: column;
+        gap: 5vw;
+    }
+    div{
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    p{
+        background-color: rgb(206, 206, 206);
+        padding: 10px;
+        width: 20%;
+        text-align: center;
+    }
+</style>
