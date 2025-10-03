@@ -2,43 +2,37 @@ import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 export const useTimeStamp = defineStore('timeStamp', () => {
 
-    const initialTime = ref(null);
-    const decorentTime = ref(0);
-    let intervalId = null
+  const seconds = ref(0)
+  let intervalId = null
+  let lastStart = 0
 
-    function start(){
-        if(intervalId) return
+  const start = () => {
+    if (intervalId) return
 
-        initialTime.value = Date.now();
-        decorentTime.value = 0;
+    lastStart = Date.now() - seconds.value * 1000
 
-        intervalId = setInterval(() => {
-            decorentTime.value = Math.floor((Date.now() - initialTime.value) / 1000)
-        }, 1000);
-    }
+    intervalId = setInterval(() => {
+      seconds.value = Math.floor((Date.now() - lastStart) / 1000)
+    }, 1000)
+  }
 
-    function stop() {
-        clearInterval(intervalId);
-        intervalId = null;
-    }
+  const pause = () => {
+    clearInterval(intervalId)
+    intervalId = null
+  }
 
-    function reset() {
-        stop();
-        initialTime.value = null;
-        decorentTime.value = 0;
-    }
+  const reset = () => {
+    pause()
+    seconds.value = 0
+  }
 
-    const formattedTime = computed(() => {
-        const minutes = Math.floor(decorentTime.value / 60);
-        const hours = Math.floor(minutes / 60);
-        const seconds = decorentTime.value % 60
-        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
-    })
-    return{
-        initialTime,
-        start,
-        stop,
-        reset,
-        formattedTime,
-    }
+  // Computed para usar direto no template
+  const formattedTime = computed(() => {
+    const h = Math.floor(seconds.value / 3600).toString().padStart(2, '0')
+    const m = Math.floor((seconds.value % 3600) / 60).toString().padStart(2, '0')
+    const s = (seconds.value % 60).toString().padStart(2, '0')
+    return `${h}:${m}:${s}`
+  })
+
+  return { seconds, start, pause, reset, formattedTime}
 })
