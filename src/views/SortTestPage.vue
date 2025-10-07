@@ -5,19 +5,23 @@
     const obj = [
         {
             id: 1,
-            name: 'circle'
+            name: 'circle',
+            icon: 'mdi mdi-circle'
         },
         {
             id: 2,
-            name: 'rectangle'
+            name: 'rectangle',
+            icon: 'mdi mdi-rectangle'
         },
         {
             id: 3,
-            name: 'pentagon'
+            name: 'pentagon',
+            icon: 'mdi mdi-pentagon'
         },
         {
             id: 4,
-            name: 'triangle'
+            name: 'triangle',
+            icon: 'mdi mdi-triangle'
         },
     ]
 
@@ -27,16 +31,16 @@
     <section>
         <div>
             <p v-for="item of moutSequence.sequence">
-                {{ item.object.name }}
+                <span :class="item.object.icon"></span>
             </p>
         </div>
         <div>
             <p v-for="item of moutSequence.itenSequence">
-                {{ item.name }}
+                <span :class="item.icon"></span>
             </p>
         </div>
         <p>
-            Correct: {{ moutSequence.correctResponse.object.name }}
+            Correct: <span :class="moutSequence.correctResponse.object.icon"></span>
         </p>
     </section>
 </template>
