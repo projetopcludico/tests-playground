@@ -8,10 +8,11 @@ function sortObjects(quantidade, arrayObj){
         const randomIndex = Math.floor(Math.random() * arrayObj.length);
         const drawn = arrayObj[randomIndex];
 
-        if(selecionados.find(obj => obj.id == drawn.id)){
-            continue;
-        }
-        
+        if(selecionados.length < quantidade -1){
+            if(selecionados.find(obj => obj.id == drawn.id)){
+                continue;
+            }
+        }        
         selecionados.push(drawn)
     }
 

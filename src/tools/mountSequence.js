@@ -1,10 +1,11 @@
 import sortObjects from "./sort";
 
-function mountSequence(numberItens, timesRepeat, arrayToSort){
+//precisa ser instanciada
+function useMountSequence(numberItens, timesRepeat, arrayToSort){
     const itenSequence = sortObjects(numberItens, arrayToSort);
     const sequence = [];
     let idSequence = 0;
-    for(let count = 0; count < timesRepeat; count++){
+    for(let count = 0; count < (timesRepeat / itenSequence.length) ; count++){
         for(let item of itenSequence) {
             idSequence++
             sequence.push({
@@ -20,8 +21,11 @@ function mountSequence(numberItens, timesRepeat, arrayToSort){
     };
     sequence[randomIndex].object.icon = 'mdi mdi-help-box'
     sequence[randomIndex].object.name = 'discover'
-    const options = shuffle(itenSequence)
-    return { sequence, correctResponse, options }
+    const options = shuffle(itenSequence);
+    
+    const finalChoices = [...new Set(options)]
+
+    return { sequence, correctResponse, finalChoices }
 }
 
 function shuffle(optionsArray) {
@@ -33,4 +37,4 @@ function shuffle(optionsArray) {
   return list;
 }
 
-export default mountSequence
+export default useMountSequence
