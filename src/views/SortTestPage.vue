@@ -1,48 +1,38 @@
 <script setup>
-    const props = defineProps(['quantidade'])
-    import { ref } from 'vue';
-    import useMountSequence from '../tools/mountSequence';
+    const props = defineProps(['numberForms', 'size', 'discovers'])
+    import { ref, onMounted } from 'vue';
+    import { useSequenceStore } from '../stores/sequence';
+    import { useAplicationStore } from '../stores/global';
     import verifyResponse from '../tools/verifyResponse';
 
     const correct = ref(null);
     const response = ref([]);
+    const aplicationStore = useAplicationStore()
 
-    const obj = [
-        {
-            id: 1,
-            name: 'circle',
-            icon: 'mdi mdi-circle-outline'
-        },
-        {
-            id: 2,
-            name: 'rectangle',
-            icon: 'mdi mdi-rectangle-outline'
-        },
-        {
-            id: 3,
-            name: 'pentagon',
-            icon: 'mdi mdi-pentagon-outline'
-        },
-        {
-            id: 4,
-            name: 'triangle',
-            icon: 'mdi mdi-triangle-outline'
-        },
-    ]
-
-    const moutSequence = useMountSequence(Number(props.quantidade), 15, 2, obj);
+    const sequenceStore = useSequenceStore()
 
     function respond(id) {
        response.value.push(id);
-       if(response.value.length == moutSequence.correctResponses.length){
-            correct.value = verifyResponse(response.value, moutSequence.correctResponses)
+       if(response.value.length == sequenceStore.correctResponses.length){
+            correct.value = verifyResponse(response.value, sequenceStore.correctResponses)
        }            
     }
+
+    function changeSequence() {
+        sequenceStore.mountSequence(props.numberForms, props.size, props.discovers, aplicationStore.aplication.themes.forms.simbols);
+        response.value = [];
+        correct.value = null
+
+    }
+
+    onMounted(() => {
+        sequenceStore.mountSequence(props.numberForms, props.size, props.discovers, aplicationStore.aplication.themes.forms.simbols);
+    })
 </script>
 <template>
     <section>
         <div class="sequence">
-            <p v-for="item of moutSequence.sequence">
+            <p v-for="item of sequenceStore.sequence">
                 <span :class="item.object.icon">{{ item.object.name }}</span>
             </p>
         </div>
@@ -51,22 +41,19 @@
             <div v-else-if="correct == null"></div>
             <div v-else>errado</div>
             <h2>Options:</h2>
-            <p v-for="item of moutSequence.finalChoices" @click="respond(item.id)">
+            <p v-for="item of sequenceStore.finalChoices" @click="respond(item.id)">
                 <span :class="item.icon">{{ item.name }}</span>
             </p>
         </div>
-        <!-- <p>
-            Corrects: 
-            <span v-for="index in moutSequence.correctResponses"
-                :key="index"
-                :class="obj.find(item => item.id == index).icon"
-            ></span>
-        </p> -->
+        <div class="reload">
+            <button @click="changeSequence">Reload</button>
+        </div>
         <div>
-            Responses:
-            <p v-for="index in response"
-               :class="obj.find(item => item.id == index).icon" >
-            </p>
+            corrects:
+            <span v-for="index of sequenceStore.correctResponses"
+                :key="index"
+                :class="aplicationStore.aplication.themes.forms.simbols.find(item => item.id == index).icon"
+            ></span>
         </div>
     </section>
 </template>
@@ -101,6 +88,9 @@
         background-color: rgb(206, 206, 206);
         padding: 10px;
         width: 20%;
+        text-align: center;
+    }
+    .reload{
         text-align: center;
     }
 </style>
