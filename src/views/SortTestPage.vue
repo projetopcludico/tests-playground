@@ -5,6 +5,7 @@
     import verifyResponse from '../tools/verifyResponse';
 
     const correct = ref(null);
+    const response = ref([]);
 
     const obj = [
         {
@@ -29,10 +30,13 @@
         },
     ]
 
-    const moutSequence = useMountSequence(props.quantidade, 9, obj);
+    const moutSequence = useMountSequence(Number(props.quantidade), 15, 2, obj);
 
     function respond(id) {
-       correct.value = verifyResponse(id, moutSequence.correctResponse.object.id)            
+       response.value.push(id);
+       if(response.value.length == moutSequence.correctResponses.length){
+            correct.value = verifyResponse(response.value, moutSequence.correctResponses)
+       }            
     }
 </script>
 <template>
@@ -51,9 +55,19 @@
                 <span :class="item.icon">{{ item.name }}</span>
             </p>
         </div>
-        <p>
-            Correct: <span :class="moutSequence.correctResponse.object.icon">{{ moutSequence.correctResponse.object.name }}</span>
-        </p>
+        <!-- <p>
+            Corrects: 
+            <span v-for="index in moutSequence.correctResponses"
+                :key="index"
+                :class="obj.find(item => item.id == index).icon"
+            ></span>
+        </p> -->
+        <div>
+            Responses:
+            <p v-for="index in response"
+               :class="obj.find(item => item.id == index).icon" >
+            </p>
+        </div>
     </section>
 </template>
 <style scoped>
@@ -74,6 +88,14 @@
         flex-direction: column;
         align-items: center;
         gap: 0;
+
+        p{
+            cursor: pointer;
+            transition: all 500ms;
+        }
+        p:hover{
+            opacity: 0.5;
+        }
     }
     p{
         background-color: rgb(206, 206, 206);
