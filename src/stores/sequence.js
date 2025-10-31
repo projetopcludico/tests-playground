@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import sortObjects from '../tools/sort' // ajuste o caminho conforme seu projeto
+import sortObjects from '../tools/sort'
 
 function getRandomIndexes(max, count) {
   const indexes = new Set()
@@ -64,6 +64,16 @@ export const useSequenceStore = defineStore('sequence', {
       this.correctResponses.push(...correctResponses)
       this.finalChoices = []
       this.finalChoices.push(...finalChoices)
+    },
+
+     revealChoice(sequenceIndex, chosenObject) {
+      const item = this.sequence[sequenceIndex]
+
+      if (item && item.object.name === 'discover') {
+        item.object = {
+          ...chosenObject
+        }
+      }
     }
   }
 })

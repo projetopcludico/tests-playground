@@ -11,8 +11,12 @@
 
     const sequenceStore = useSequenceStore()
 
-    function respond(id) {
-       response.value.push(id);
+    function respond(id, choice) {
+       const discoverIndex = sequenceStore.sequence.findIndex(obj => obj.object.name === 'discover')
+       if (discoverIndex !== -1) {
+        sequenceStore.revealChoice(discoverIndex, choice)
+        response.value.push(id);
+       }
        if(response.value.length == sequenceStore.correctResponses.length){
             correct.value = verifyResponse(response.value, sequenceStore.correctResponses)
        }            
@@ -41,7 +45,7 @@
             <div v-else-if="correct == null"></div>
             <div v-else>errado</div>
             <h2>Options:</h2>
-            <p v-for="item of sequenceStore.finalChoices" @click="respond(item.id)">
+            <p v-for="item of sequenceStore.finalChoices" @click="respond(item.id, item)">
                 <span :class="item.icon">{{ item.name }}</span>
             </p>
         </div>
