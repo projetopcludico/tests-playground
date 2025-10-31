@@ -1,19 +1,31 @@
 import { defineStore } from 'pinia'
 import { computed, reactive } from 'vue'
+import verifyResponse from '../tools/verifyResponse';
 
 export const useGeniuStore = defineStore('geniusStore', () => {
     const state = reactive({
         sequenceGenius: [],
-        sequenceResponse: []
+        sequenceResponse: [],
+        corrects: 0,
+        isPlaying: false
     });
 
-    const respond = () => {
+    const startGenius = () => {
         
     }
 
-    const compareResponse = () => {
+    const respond = async(id) => {
+        if(state.isPlaying) return
+        state.sequenceResponse.push(id);
 
     }
+
+    const playAudio = (path) => {
+        const audio = new Audio(path);
+        audio.play();
+    }
+
+    
 
     const sequenceGenius = computed(() => sequenceGenius.value);
     const sequenceResponse = computed(() => sequenceResponse.value);
@@ -22,6 +34,6 @@ export const useGeniuStore = defineStore('geniusStore', () => {
         sequenceGenius,
         sequenceResponse,
         respond,
-        compareResponse
+        playAudio
     }
 })
