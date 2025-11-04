@@ -6,13 +6,38 @@ export const useTimeStamp = defineStore('timeStamp', () => {
   let intervalId = null
   let lastStart = 0
 
-  const start = () => {
+  const start = (countDown = false, time = Number, callBack = null) => {
     if (intervalId) return
 
-    lastStart = Date.now() - seconds.value * 1000
+    if(countDown){
+      if(typeof time === "number" && time > 0){
+        seconds.value = time
+      } else {
+        return console.log('O tempo precisa ser maior que 0 para contagem regressiva!')
+      }
+    } 
+
+    lastStart = Date.now();
 
     intervalId = setInterval(() => {
-      seconds.value = Math.floor((Date.now() - lastStart) / 1000)
+      const elapsed = Math.floor((Date.now() - lastStart) / 1000);
+      lastStart = Date.now();
+
+      if(countDown) {
+        seconds.value = Math.max(0, seconds.value - elapsed);
+
+        if(seconds.value <= 0) {
+
+          pause();
+          if(callBack && typeof callBack === "function"){
+            callBack();
+          }
+
+        }
+
+      } else{
+        seconds.value += elapsed;
+      }
     }, 1000)
   }
 
