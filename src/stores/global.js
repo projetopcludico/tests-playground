@@ -6,6 +6,7 @@ export const useAplicationStore = defineStore('aplicationStore', () => {
   const aplication = ref({
     themes: {
       forms: {
+        countResponses: 0,
         simbols: [
           { id: 1, name: 'circle', icon: 'mdi mdi-circle-outline' },
           { id: 2, name: 'rectangle', icon: 'mdi mdi-rectangle-outline' },
@@ -15,19 +16,16 @@ export const useAplicationStore = defineStore('aplicationStore', () => {
         ],
         difficulties: {
           easy: {
-            objective: 10,
             timeLimit: 30000,
-            params: { numberForms: 2, size: 6, discovers: 1 },
+            params: { numberForms: 2, size: 6, discovers: 1, objectiveResponses: 10 },
           },
           medim: {
-            objective: 7,
             timeLimit: 30000,
-            params: { numberForms: 2, size: 12, discovers: 2 },
+            params: { numberForms: 2, size: 12, discovers: 2, objectiveResponses: 7 },
           },
           hard: {
-            objective: 4,
             timeLimit: 30000,
-            params: { numberForms: 3, size: 18, discovers: 3 },
+            params: { numberForms: 3, size: 18, discovers: 3, objectiveResponses: 4 },
           },
         },
       },

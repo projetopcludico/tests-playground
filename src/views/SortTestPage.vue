@@ -1,13 +1,11 @@
 <script setup>
-    const props = defineProps(['numberForms', 'size', 'discovers'])
+    const props = defineProps(['numberForms', 'size', 'discovers', 'objectiveResponses'])
     import { ref, onMounted } from 'vue';
     import { useSequenceStore } from '../stores/sequence';
     import { useAplicationStore } from '../stores/global';
     import { useTimeStamp } from '../stores/timestamp';
     import verifyResponse from '../tools/verifyResponse';
 
-
-    const correct = ref(null);
     const response = ref([]);
     const aplicationStore = useAplicationStore()
     const timeStamp = useTimeStamp();
@@ -20,20 +18,21 @@
         response.value.push(id);
        }
        if(response.value.length == sequenceStore.correctResponses.length){
-            correct.value = verifyResponse(response.value, sequenceStore.correctResponses)
+            if(verifyResponse(response.value, sequenceStore.correctResponses)){
+                aplicationStore.aplication.themes.forms.countResponses++;
+                changeSequence();
+            }
        }            
     }
 
     function changeSequence() {
         sequenceStore.mountSequence(props.numberForms, props.size, props.discovers, aplicationStore.aplication.themes.forms.simbols);
         response.value = [];
-        correct.value = null
-
     }
 
     onMounted(() => {
         sequenceStore.mountSequence(props.numberForms, props.size, props.discovers, aplicationStore.aplication.themes.forms.simbols);
-        timeStamp.start(true, 10, () => {
+        timeStamp.start(true, 30, () => {
             console.log('Seu tempo terminou');
         });
     })
@@ -41,38 +40,28 @@
 <template>
     <section class="manage">
         <p>{{ timeStamp.formattedTime }}</p>
+        <p>
+            {{ aplicationStore.aplication.themes.forms.countResponses }}/
+            {{ props.objectiveResponses }}
+        </p>
     </section>
     <section class="game">
         <div class="sequence">
             <p class="card" v-for="item of sequenceStore.sequence">
-                <span :class="item.object.icon">{{ item.object.name }}</span>
+                <span :class="item.object.icon"></span>
             </p>
         </div>
         <div class="options">
-            <div v-if="correct">correto</div>
-            <div v-else-if="correct == null"></div>
-            <div v-else>errado</div>
             <h2>Options:</h2>
-            <p class="card" v-for="item of sequenceStore.finalChoices" @click="respond(item.id, item)">
-                <span :class="item.icon">{{ item.name }}</span>
-            </p>
-        </div>
-        <div class="reload">
-            <button @click="changeSequence">Reload</button>
-        </div>
-        <div>
-            corrects:
-            <span v-for="index of sequenceStore.correctResponses"
-                :key="index"
-                :class="aplicationStore.aplication.themes.forms.simbols.find(item => item.id == index).icon"
-            ></span>
+            <a class="choice" href="#" v-for="item of sequenceStore.finalChoices" @click="respond(item.id, item)">
+                <span :class="item.icon"></span>
+            </a>
         </div>
     </section>
 </template>
 <style scoped>
     section.game{
         display: flex;
-        flex-direction: column;
         gap: 5vw;
         font-size: 2rem;
     }
@@ -80,12 +69,13 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 5px;
+        gap: 20px;
     }
     div.sequence{
         display: flex;
         flex-wrap: wrap;
         gap: 20px;
+        width: 50%;
         justify-content: center;
     }
     div.options{
@@ -94,17 +84,15 @@
         align-items: center;
         gap: 0;
 
-        p{
+        a.choice{
             cursor: pointer;
             transition: all 500ms;
         }
-        p:hover{
+        a.choice:hover{
             opacity: 0.5;
         }
     }
     p.card{
-        background-color: rgb(206, 206, 206);
-        padding: 10px;
         width: 20%;
         text-align: center;
     }

@@ -9,7 +9,7 @@ const router = createRouter({
       component: () => import('@/views/HomeTestPage.vue')
     },
     {
-      path: '/sort/:numberForms/:size/:discovers',
+      path: '/sort/:numberForms/:size/:discovers/:objectiveResponses',
       name: 'sortTest',
       component: () => import('@/views/SortTestPage.vue'),
       props: true
