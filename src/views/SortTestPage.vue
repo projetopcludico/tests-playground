@@ -20,8 +20,8 @@
        if(response.value.length == sequenceStore.correctResponses.length){
             if(verifyResponse(response.value, sequenceStore.correctResponses)){
                 aplicationStore.aplication.themes.forms.countResponses++;
-                changeSequence();
             }
+            changeSequence();
        }            
     }
 
