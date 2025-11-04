@@ -3,12 +3,14 @@
     import { ref, onMounted } from 'vue';
     import { useSequenceStore } from '../stores/sequence';
     import { useAplicationStore } from '../stores/global';
+    import { useTimeStamp } from '../stores/timestamp';
     import verifyResponse from '../tools/verifyResponse';
+
 
     const correct = ref(null);
     const response = ref([]);
     const aplicationStore = useAplicationStore()
-
+    const timeStamp = useTimeStamp();
     const sequenceStore = useSequenceStore()
 
     function respond(id, choice) {
@@ -31,12 +33,18 @@
 
     onMounted(() => {
         sequenceStore.mountSequence(props.numberForms, props.size, props.discovers, aplicationStore.aplication.themes.forms.simbols);
+        timeStamp.start(true, 10, () => {
+            console.log('Seu tempo terminou');
+        });
     })
 </script>
 <template>
-    <section>
+    <section class="manage">
+        <p>{{ timeStamp.formattedTime }}</p>
+    </section>
+    <section class="game">
         <div class="sequence">
-            <p v-for="item of sequenceStore.sequence">
+            <p class="card" v-for="item of sequenceStore.sequence">
                 <span :class="item.object.icon">{{ item.object.name }}</span>
             </p>
         </div>
@@ -45,7 +53,7 @@
             <div v-else-if="correct == null"></div>
             <div v-else>errado</div>
             <h2>Options:</h2>
-            <p v-for="item of sequenceStore.finalChoices" @click="respond(item.id, item)">
+            <p class="card" v-for="item of sequenceStore.finalChoices" @click="respond(item.id, item)">
                 <span :class="item.icon">{{ item.name }}</span>
             </p>
         </div>
@@ -62,11 +70,17 @@
     </section>
 </template>
 <style scoped>
-    section{
+    section.game{
         display: flex;
         flex-direction: column;
         gap: 5vw;
         font-size: 2rem;
+    }
+    section.manage{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
     }
     div.sequence{
         display: flex;
@@ -88,7 +102,7 @@
             opacity: 0.5;
         }
     }
-    p{
+    p.card{
         background-color: rgb(206, 206, 206);
         padding: 10px;
         width: 20%;
