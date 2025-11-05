@@ -21,8 +21,10 @@ function shuffle(optionsArray) {
 export const useSequenceStore = defineStore('sequence', {
   state: () => ({
     sequence: [],
+    // correctResponses é um array de ids. A posição (index) equivale à posição na sequence.
     correctResponses: [],
-    finalChoices: []
+    finalChoices: [],
+    selectedIndex: null
   }),
 
   actions: {
@@ -31,13 +33,12 @@ export const useSequenceStore = defineStore('sequence', {
       const sequence = []
       let idSequence = 0
 
-      // monta a sequência completa
       for (let count = 0; count < timesRepeat / itenSequence.length; count++) {
         for (let item of itenSequence) {
           idSequence++
           sequence.push({
             id: idSequence,
-            object: { ...item }
+            object: { ...item } // item deve conter .id, .name, .icon
           })
         }
       }
@@ -48,31 +49,42 @@ export const useSequenceStore = defineStore('sequence', {
 
       for (const index of randomIndexes) {
         const chosen = sequence[index]
-        correctResponses.push(chosen.object.id)
+        // guarda o id correto na posição `index`
+        correctResponses[index] = chosen.object.id
 
         sequence[index].object.icon = 'mdi mdi-help-box'
         sequence[index].object.name = 'discover'
       }
 
       const options = shuffle(itenSequence)
-      const finalChoices = [...new Set(options)]
+      // finalChoices como array de objetos (únicos por id)
+      // se quiser garantir unicidade por id:
+      const seen = new Set()
+      const finalChoices = options.filter(opt => {
+        if (seen.has(opt.id)) return false
+        seen.add(opt.id)
+        return true
+      })
 
-      // atualiza o estado da store
-      this.sequence = []
-      this.sequence.push(...sequence)
-      this.correctResponses = []
-      this.correctResponses.push(...correctResponses)
-      this.finalChoices = []
-      this.finalChoices.push(...finalChoices)
+      this.sequence = sequence
+      this.correctResponses = correctResponses
+      this.finalChoices = finalChoices
+      this.selectedIndex = null
     },
 
-     revealChoice(sequenceIndex, chosenObject) {
-      const item = this.sequence[sequenceIndex]
-
+    selectDiscover(index) {
+      const item = this.sequence[index]
       if (item && item.object.name === 'discover') {
-        item.object = {
-          ...chosenObject
-        }
+        this.selectedIndex = index
+      }
+    },
+
+    // altera o item da sequência no índice informado
+    revealChoice(index, chosenObject) {
+      const item = this.sequence[index]
+      if (item && item.object.name === 'discover') {
+        // substitui pelo objeto escolhido (incluindo id)
+        item.object = { ...chosenObject }
       }
     }
   }

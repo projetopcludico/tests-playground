@@ -1,8 +1,10 @@
 function verifyResponse(responseItem, correctItem) {
-    for(let position = 0; position < responseItem.length; position++){
-        if(responseItem[position] !== correctItem[position]) return false
-    }
-    return true;
+  // checa cada resposta do usuário
+  for (const res of responseItem) {
+    const correctId = correctItem[res.index]
+    if (correctId === undefined || correctId !== res.id) return false
+  }
+  return true
 }
 
 export default verifyResponse
