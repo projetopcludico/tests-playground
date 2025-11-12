@@ -27,17 +27,42 @@ function respond(choiceId, choiceObject) {
     return
   }
 
-  response.value.push({ index, id: choiceId })
-  sequenceStore.revealChoice(index, choiceObject)
-  sequenceStore.selectedIndex = null
+  const correctIdForPosition = sequenceStore.correctResponses[index]
+  console.log({
+  index,
+  correctIdForPosition,
+  correctType: typeof correctIdForPosition,
+  correctJSON: JSON.stringify(correctIdForPosition),
+  choiceId,
+  choiceType: typeof choiceId,
+  choiceJSON: JSON.stringify(choiceId),
+  looseEqual: correctIdForPosition == choiceId,
+  strictEqual: correctIdForPosition === choiceId
+})
 
+
+  if(correctIdForPosition === undefined){
+    console.warn('Esta posição não tem resposta registrada:', index);
+    sequenceStore.selectedIndex = null
+    return
+  }
+
+  if(correctIdForPosition == choiceId){
+    response.value.push({ index, id: choiceId })
+    sequenceStore.revealChoice(index, choiceObject)
+    sequenceStore.selectedIndex = null
+  } else {
+    console.log(`Reposta errada para a posição ${index}, esperado: ${correctIdForPosition}, recebido ${choiceId}`);
+    sequenceStore.selectedIndex = null;
+    return
+  }
 
   const expectedCount = sequenceStore.correctResponses.filter(Boolean).length
   if (response.value.length === expectedCount) {
     if (verifyResponse(response.value, sequenceStore.correctResponses)) {
       aplicationStore.aplication.themes.forms.countResponses++
-    }
-    changeSequence()
+      changeSequence();
+    } 
   }
 }
 
