@@ -21,7 +21,7 @@ function playSequenceAudio(audios) {
     tocarPróximo();
 }
 
-return{
+export{
     playAudio,
     playSequenceAudio
 }

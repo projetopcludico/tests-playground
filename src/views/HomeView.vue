@@ -1,15 +1,14 @@
 <script setup>
     import { useAplicationStore } from '../stores/global';
-    import { useGeniuStore } from '../stores/genius';
+    import { playAudio } from '../tools/audio';
     const applicationStore = useAplicationStore();
-    const geniusStore = useGeniuStore();
 </script>
 <template>
     <ul>
         <li v-for="sound in applicationStore.aplication.sounds.objects"
             class="sound-card"
             :style="`background-color: ${sound.color}`"
-            @click="geniusStore.playAudio(sound.path)"
+            @click="playAudio(sound.path)"
         >
             {{ sound.name }}
         </li>
