@@ -21,7 +21,6 @@ function shuffle(optionsArray) {
 export const useSequenceStore = defineStore('sequence', {
   state: () => ({
     sequence: [],
-    // correctResponses é um array de ids. A posição (index) equivale à posição na sequence.
     correctResponses: [],
     finalChoices: [],
     selectedIndex: null
@@ -49,16 +48,18 @@ export const useSequenceStore = defineStore('sequence', {
 
       for (const index of randomIndexes) {
         const chosen = sequence[index]
-        // guarda o id correto na posição `index`
         correctResponses[index] = chosen.object.id
 
         sequence[index].object.icon = 'mdi mdi-help-box'
         sequence[index].object.name = 'discover'
+
+        if(sequence[index].object.path) {
+          sequence[index].object.path = ''
+        }
       }
 
       const options = shuffle(itenSequence)
-      // finalChoices como array de objetos (únicos por id)
-      // se quiser garantir unicidade por id:
+
       const seen = new Set()
       const finalChoices = options.filter(opt => {
         if (seen.has(opt.id)) return false
@@ -79,11 +80,9 @@ export const useSequenceStore = defineStore('sequence', {
       }
     },
 
-    // altera o item da sequência no índice informado
     revealChoice(index, chosenObject) {
       const item = this.sequence[index]
       if (item && item.object.name === 'discover') {
-        // substitui pelo objeto escolhido (incluindo id)
         item.object = { ...chosenObject }
       }
     }

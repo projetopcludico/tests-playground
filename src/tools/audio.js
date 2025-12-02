@@ -9,7 +9,7 @@ function playSequenceAudio(audios) {
     function tocarPróximo() {
         if(index >= audios.length) return;
 
-        const audio = new Audio(audios[index]);
+        const audio = new Audio(audios[index].path);
         audio.play();
 
         audio.addEventListener("ended", () => {
