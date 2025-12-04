@@ -44,7 +44,7 @@ export const useSequenceStore = defineStore('sequence', {
 
       const discoverCount = Math.min(numberDiscover, sequence.length)
       const randomIndexes = getRandomIndexes(sequence.length, discoverCount).sort((a, b) => a - b)
-      const correctResponses = []
+      const correctResponses = Array(sequence.length).fill(null)
 
       for (const index of randomIndexes) {
         const chosen = sequence[index]
