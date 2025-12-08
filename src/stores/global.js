@@ -34,9 +34,9 @@ export const useAplicationStore = defineStore('aplicationStore', () => {
           },
         },
       },
-    },
-    
-    sounds:{
+      sounds: {
+        required: 5,
+        countResponses: 0,
         objects: [
             {id: 1, path: '/sounds/C4.mp3', name: 'Dó', color: 'blue'},
             {id: 2, path: '/sounds/D4.mp3', name: 'Ré', color: 'green'},
@@ -46,8 +46,8 @@ export const useAplicationStore = defineStore('aplicationStore', () => {
             {id: 6, path: '/sounds/A4.mp3', name: 'Lá', color: 'yellow'},
             {id: 7, path: '/sounds/B4.mp3', name: 'Si', color: 'purple'},
         ],
-        
-    }
+      }
+    },
   });
 
   return{

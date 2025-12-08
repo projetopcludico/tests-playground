@@ -46,21 +46,25 @@ audioStore.playAudio(path);
   const expectedCount = sequenceStore.correctResponses.filter(id => id !== null).length
   if (response.value.length === expectedCount) {
     if (verifyResponse(response.value, sequenceStore.correctResponses)) {
-      console.log('Parabéns! Você certou');
+      aplicationStore.aplication.themes.sounds.countResponses++;
+      sequenceStore.mountSequence(4, 12, 1, aplicationStore.aplication.themes.sounds.objects);
+      response.value = [];
+      console.log("Acertou!");
     } else{
-        console.log('Errou ou programei errado')
+      sequenceStore.mountSequence(4, 12, 1, aplicationStore.aplication.themes.sounds.objects);
+      console.log("Errou!");
     }
   }
 }
 
 onMounted(() => {
-  sequenceStore.mountSequence(4, 12, 1, aplicationStore.aplication.sounds.objects)
-  console.log(sequenceStore.sequence)
+  sequenceStore.mountSequence(4, 12, 1, aplicationStore.aplication.themes.sounds.objects);
+  console.log(sequenceStore.sequence);
 })
 
 </script>
 <template>
-  <ul>
+  <ul class="sequence">
     <li
       v-for="(sound, index) in sequenceStore.sequence"
       :key="index"
@@ -80,19 +84,18 @@ onMounted(() => {
       :style="{
         backgroundColor: sound.color,
       }"
-      @click="respond(sound.id, sound, sound.path)"
+      @click="respond(sound.id, sound, sound.path); console.log(sound)"
     >
       {{ sound.name }}
     </li>
   </ul>
-  <h2>Corrects</h2>
-  <ul>
-    <li v-for="id in sequenceStore.correctResponses">
-      {{ id }}
-    </li>
-  </ul>
+  <p>{{ aplicationStore.aplication.themes.sounds.countResponses }} / {{ aplicationStore.aplication.themes.sounds.required }}</p>
+  
 </template>
 <style scoped>
+.sequence {
+  flex-wrap: wrap;
+}
 ul {
   display: flex;
   gap: 20px;
