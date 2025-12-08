@@ -5,15 +5,15 @@ export const useAudioStore = defineStore('audioStore', () => {
 
     const state = reactive({
         currentAudio: null,
-        currentSequence: null
+        currentSequence: null,
+        sound: new Audio(),
     });
 
     const playAudio = (path) => {
         if(state.currentAudio) state.currentAudio = null;
 
-        state.currentAudio = path
-        const audio = new Audio(path);
-        audio.play();
+        state.sound.src = path
+        state.sound.play();
     }
 
     const playSequence = (sequence) => {

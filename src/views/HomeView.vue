@@ -60,6 +60,7 @@ audioStore.playAudio(path);
 onMounted(() => {
   sequenceStore.mountSequence(4, 12, 1, aplicationStore.aplication.themes.sounds.objects);
   console.log(sequenceStore.sequence);
+  
 })
 
 </script>
@@ -73,10 +74,11 @@ onMounted(() => {
       :style="`background-color: ${sound.object.color}`"
       @click="click(index, sound.object.path)"
     >
+      <a style="width: 100px; height: 100px;" @focus="click(index, sound.object.path)" href=""></a>
       {{ sound.object.name }}
     </li>
   </ul>
-  <button @click="audioStore.playSequence(sequenceStore.sequence)">Tocar audios</button>
+  <button @click="">Tocar audios</button>
   <ul>
     <li
       v-for="sound in sequenceStore.finalChoices"
@@ -84,8 +86,9 @@ onMounted(() => {
       :style="{
         backgroundColor: sound.color,
       }"
-      @click="respond(sound.id, sound, sound.path); console.log(sound)"
+      @click="; console.log(sound)"
     >
+      <a class="" href="#" @click="respond(sound.id, sound, sound.path)"></a>
       {{ sound.name }}
     </li>
   </ul>
