@@ -17,6 +17,7 @@
         </div>
         <div class="flex flex-col justify-center items-center gap-10 md:flex-row">
             <CardComp v-for="difficultie in difficulties"
+                :tabindex="difficultie.id"
                 :item="difficultie"
                 :params="difficultie.params"
                 router-name="SoundsPage"

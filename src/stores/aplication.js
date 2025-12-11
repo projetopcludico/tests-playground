@@ -20,7 +20,8 @@ export const useAplicationStore = defineStore('aplicationStore', () => {
             {id: 7, path: '/sounds/B4.mp3', name: 'Si', color: 'purple'},
         ],
         difficulties: {
-            easy: {
+            easy:{
+                id: 1,
                 title: "Fácil",
                 description: "Você terá 1 minuto e 30 segundos para adivinhar o som que falta na sequência, clique na no som que você queira descobrir e responda até acertar todos os 5 padrões",
                 params: { 
@@ -31,6 +32,7 @@ export const useAplicationStore = defineStore('aplicationStore', () => {
                 }
             },
             medium: {
+                id: 2,
                 title: "Médio",
                 description: "Você terá 1 minuto e 30 segundos para adivinhar os 2 sons que faltam na sequência, clique na no som que você queira descobrir e responda até acertar todos os 5 padrões",
                 params: { 
@@ -41,6 +43,7 @@ export const useAplicationStore = defineStore('aplicationStore', () => {
                 }
             },
             hard: {
+                id: 3,
                 title: "Difícil",
                 description: "Você terá 2 minutos e 30 segundos para adivinhar os 3 sons que faltam na sequência, clique na no som que você queira descobrir e responda até acertar todos os 5 padrões",
                 params: {
