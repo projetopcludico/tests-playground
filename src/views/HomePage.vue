@@ -10,7 +10,7 @@
 </script>
 
 <template>
-    <div class="flex flex-col gap-20 bg-white md:items-center">
+    <div class="flex flex-col gap-20 bg-white md:items-center p-10">
         <div class="w-full flex flex-col gap-5 items-center md:w-3/4">
             <h1 class="text-5xl">{{ title }}</h1>
             <p class="text-xl text-justify">{{ subtitle }}</p>

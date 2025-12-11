@@ -9,7 +9,7 @@ const router = createRouter({
       name: 'HomePage'
     },
     {
-      path: '/sounds/:numberSounds/:size/:discover/:timeLimit/:required',
+      path: '/sounds/:numberSounds/:size/:discover/:timeLimit/',
       component: () => import('@/views/SoundsPage.vue'),
       name: 'SoundsPage',
       props: true,

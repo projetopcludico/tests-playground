@@ -1,13 +1,16 @@
 <script setup>
+    import FeedBackComp from '../components/FeedBackComp.vue';
     import SoundSequence from '../components/SoundSequence.vue';
     import SoundResponse from '../components/SoundResponse.vue';
-    import { onMounted } from 'vue';
+    import { onMounted, ref } from 'vue';
     import { useAplicationStore } from '../stores/aplication';
     import { useAudioStore } from '../stores/audio';
     import { useSequenceStore } from '../stores/sequence';
+    import { useTimeStamp } from '../stores/timeStamp';
     const audioStore = useAudioStore();
     const sequenceStore = useSequenceStore();
     const aplicationStore = useAplicationStore();
+    const timeStamp = useTimeStamp();
 
     import { useRouter } from 'vue-router';
     const router = useRouter();
@@ -17,7 +20,6 @@
         size: String,
         discover: String,
         timeLimit: String,
-        required: String
     });
 
     const propsNumber = {
@@ -25,21 +27,40 @@
         size: Number(props.size),
         discover: Number(props.discover),
         timeLimit: Number(props.timeLimit),
-        required: Number(props.required),
+    }
+
+    const feedBack = ref(false);
+
+    function backHome() {
+        router.push({ name: 'HomePage'});
+    }
+
+    function tryAgain() {
+        sequenceStore.mountSequence(propsNumber.numberSounds, propsNumber.size, propsNumber.discover, aplicationStore.aplication.themes.sounds.objects);
+        aplicationStore.aplication.themes.sounds.countResponses = 0;
+        feedBack.value = false;
+        timeStamp.reset();
+        timeStamp.start(true, propsNumber.timeLimit, () => {
+            feedBack.value = true
+        })
     }
 
     onMounted(() => {
-        sequenceStore.mountSequence(propsNumber.numberSounds, propsNumber.size, propsNumber.discover, aplicationStore.aplication.themes.sounds.objects);
-        aplicationStore.aplication.themes.sounds.countResponses = 0;
+        tryAgain();
     })
 </script>
 
 <template>
+    <FeedBackComp v-if="feedBack"
+        theme="sounds"
+        @back="backHome"
+        @try-again="tryAgain"
+    />
+    <section class="flex flex-col items-center text-white gap-20 p-10">
 
-    <section class="flex flex-col items-center text-white gap-20">
-
-        <div class="text-black text-2xl">
-            <p>Acertos: {{ aplicationStore.aplication.themes.sounds.countResponses }}/{{ props.required }}</p>
+        <div class="flex flex-col gap-5 text-black text-2xl md:text-center">
+            <p>Acertos: {{ aplicationStore.aplication.themes.sounds.countResponses }}/{{ aplicationStore.aplication.themes.sounds.required }}</p>
+            <p>Tempo restante: {{ timeStamp.formattedTime }}</p>
         </div>
 
         <div class="flex flex-wrap gap-5 justify-center">
@@ -65,7 +86,7 @@
 
         <button 
             class="px-8 py-3 bg-pink-500 border-2 border-pink-500 text-2xl rounded-md cursor-pointer hover:bg-white hover:text-pink-500 transition-all duration-300"
-            @click="router.push({ name: 'HomePage'})"
+            @click="backHome"
         >
             Sair
         </button>

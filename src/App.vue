@@ -1,5 +1,5 @@
 <template>
-    <main class="min-w-screen p-10">
+    <main class="min-w-screen">
         <RouterView/>
     </main>  
 </template>
