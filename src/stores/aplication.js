@@ -42,12 +42,12 @@ export const useAplicationStore = defineStore('aplicationStore', () => {
             },
             hard: {
                 title: "Difícil",
-                description: "Você terá 1 minuto e 30 segundos para adivinhar os 3 sons que faltam na sequência, clique na no som que você queira descobrir e responda até acertar todos os 5 padrões",
+                description: "Você terá 2 minutos e 30 segundos para adivinhar os 3 sons que faltam na sequência, clique na no som que você queira descobrir e responda até acertar todos os 5 padrões",
                 params: {
                     numberSounds: 5, 
                     size: 15, 
                     discover: 3, 
-                    timeLimit: 90, 
+                    timeLimit: 150, 
                 }
             }
         }
