@@ -71,9 +71,11 @@
                 @play-audio.="audioStore.playAudio"
             />
         </div>
-        <button class="text-black border p-2"
+        <button class="px-8 py-3 bg-pink-500 border-2 border-pink-500 text-2xl rounded-md cursor-pointer hover:bg-white hover:text-pink-500 transition-all duration-300"
             @click="audioStore.playSequence(sequenceStore.sequence)"
-        >Tocar sequencia</button>
+        >
+            Tocar sequencia
+        </button>
         <div class="flex flex-col items-center gap-10">
             <h1 class="text-3xl text-black font-semibold">Opções:</h1>
             <div class="flex flex-wrap gap-5 justify-center">

@@ -18,7 +18,7 @@
 <template>
 
     <a  href="#"
-        :title="props.sound.object.name == 'discover' ? 'descobrir o som' : `som ${props.index + 1}`" 
+        :aria-label="props.sound.object.name == 'discover' ? 'som que você tem que descobrir, clique para selecionar' : `som ${props.index + 1}`" 
         @click="click"
         @focus="emits('playAudio', props.sound.object.path)"                
     >
@@ -29,7 +29,7 @@
                 : 'flex flex-col bg-pink-500 items-center justify-center w-20 h-20 border border-black rounded-md'
             "
         >
-             <span class="text-4xl" :class="props.sound.object.icon"></span> <!--tentar retirar pois está bugando o leitor -->
+             <span aria-hidden="true" class="text-4xl" :class="props.sound.object.icon"></span>
         </div>
     </a>
 
