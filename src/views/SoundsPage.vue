@@ -56,7 +56,7 @@
         @back="backHome"
         @try-again="tryAgain"
     />
-    <section class="flex flex-col items-center text-white gap-20 p-10">
+    <section v-else class="flex flex-col items-center text-white gap-20 p-10">
 
         <div class="flex flex-col gap-5 text-black text-2xl md:text-center">
             <p>Acertos: {{ aplicationStore.aplication.themes.sounds.countResponses }}/{{ aplicationStore.aplication.themes.sounds.required }}</p>
@@ -71,7 +71,9 @@
                 @play-audio.="audioStore.playAudio"
             />
         </div>
-
+        <button class="text-black border p-2"
+            @click="audioStore.playSequence(sequenceStore.sequence)"
+        >Tocar sequencia</button>
         <div class="flex flex-col items-center gap-10">
             <h1 class="text-3xl text-black font-semibold">Opções:</h1>
             <div class="flex flex-wrap gap-5 justify-center">
