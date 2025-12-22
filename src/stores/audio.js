@@ -1,23 +1,25 @@
 import { defineStore } from "pinia";
-import { reactive } from "vue";
+import { computed, reactive } from "vue";
 
 export const useAudioStore = defineStore('audioStore', () => {
 
     const state = reactive({
-        currentAudio: null,
         currentSequence: null,
         sound: new Audio(),
     });
 
+    const sound = computed(() => state.sound);
+
     const playAudio = (path) => {
-        if(state.currentAudio) state.currentAudio = null;
+        if(state.currentSequence) {
+            state.currentSequence = null
+        }
 
         state.sound.src = path
         state.sound.play();
     }
 
     const playSequence = (sequence) => {
-        
         if(state.currentSequence) state.currentSequence = null
 
         state.currentSequence = sequence;
@@ -25,21 +27,21 @@ export const useAudioStore = defineStore('audioStore', () => {
 
         const playNext = () => {
 
-            if(index >= sequence.length) return;
+            if(index >= state.currentSequence.length) return;
 
-            if(sequence[index].object.path == '') {
+            if(state.currentSequence[index].object.path == '') {
                 index++;
                 setTimeout( playNext, 1000 );
                 return
             }
 
-            const audio = new Audio(sequence[index].object.path);
-            audio.play();
+            state.sound.src = state.currentSequence[index].object.path
+            state.sound.play();
 
-            audio.addEventListener('ended', () => {
+            state.sound.onended = () => {
                 index++;
                 playNext();
-            });
+            }
 
         }
 
@@ -49,7 +51,8 @@ export const useAudioStore = defineStore('audioStore', () => {
 
     return{
         playAudio,
-        playSequence
+        playSequence,
+        sound
     }
 
 })
