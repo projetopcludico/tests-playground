@@ -4,7 +4,11 @@ import sortObjects from '../tools/sort'
 function getRandomIndexes(max, count) {
   const indexes = new Set()
   while (indexes.size < count) {
-    indexes.add(Math.floor(Math.random() * max))
+    const index = Math.floor(Math.random() * max);
+    if(index === 0) {
+      continue;
+    }
+    indexes.add(index);
   }
   return Array.from(indexes)
 }
@@ -38,7 +42,7 @@ export const useSequenceStore = defineStore('sequence', {
           idSequence++
           sequence.push({
             id: idSequence,
-            object: { ...item } // item deve conter .id, .name, .icon
+            object: { ...item }
           })
         }
       }
