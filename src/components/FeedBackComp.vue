@@ -4,6 +4,10 @@
     const aplicationStore = useAplicationStore();
 
     const emits = defineEmits(['back', 'tryAgain']);
+    const buttons = [
+        {name: 'Voltar para o início',eventName: 'back'},
+        {name: 'Tentar novamente',eventName: 'tryAgain'},
+    ];
     const props = defineProps({
         theme: String 
     })
@@ -33,17 +37,11 @@
                 </li>
                 <li class="flex flex-col text-white text-xl gap-4">
 
-                    <button 
+                    <button v-for="emit in buttons"
                         class="bg-pink-500 px-10 py-2 rounded-md border-2 border-pink-500 cursor-pointer hover:bg-white hover:text-pink-500 transition-all duration-300"
-                        @click="emits('back')"
-                    > 
-                        Voltar 
-                    </button>
-                    <button 
-                        class="bg-pink-500 px-10 py-2 rounded-md border-2 border-pink-500 cursor-pointer hover:bg-white hover:text-pink-500 transition-all duration-300"
-                        @click="emits('tryAgain')"
-                    >
-                        Tentar Novamente
+                        @click="emits(emit.eventName)"
+                    >   
+                        {{ emit.name }}
                     </button>
 
                 </li>
