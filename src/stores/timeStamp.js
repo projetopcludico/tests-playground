@@ -3,6 +3,8 @@ import { ref, computed } from "vue";
 
 export const useTimeStamp = defineStore("timeStamp", () => {
   const seconds = ref(0);
+  const warned = ref(false);
+  const timeWarn = new Audio('/sounds/warns/timeWarn.mp3');
   let intervalId = null;
   let startTime = 0;
   let initialSeconds = 0;
@@ -29,10 +31,19 @@ export const useTimeStamp = defineStore("timeStamp", () => {
 
       if (countDown) {
         seconds.value = Math.max(0, initialSeconds - totalElapsed);
+        
         if (seconds.value <= 0) {
           pause();
+          timeWarn.pause();
           if (callBack && typeof callBack === "function") {
             callBack();
+          }
+        }
+
+        if(seconds.value === 5){
+          if(warned.value === false){
+            timeWarn.play();
+            warned.value = true
           }
         }
       } else {

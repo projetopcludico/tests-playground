@@ -59,7 +59,7 @@ export const useSequenceStore = defineStore('sequence', {
         sequence[index].object.name = 'discover'
 
         if(sequence[index].object.path) {
-          sequence[index].object.path = ''
+          sequence[index].object.path = '/sounds/discover.mp3'
         }
       }
 
