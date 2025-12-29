@@ -69,19 +69,6 @@
             <p class="text-xl p-4 border-pink-500 border-l-2 rounded-md shadow-xl">{{ aplicationStore.aplication.themes.sounds.difficulties[props.dificulty].howToUse }}</p>
         </div>
 
-        <div class="flex flex-wrap gap-5 justify-center">
-            <SoundSequence 
-                v-for="(sound, index) in sequenceStore.sequence" :key="index"
-                :sound="sound"
-                :index="index"
-                @play-audio.="audioStore.playAudio"
-            />
-        </div>
-        <button class="px-8 py-3 bg-pink-500 border-2 border-pink-500 text-2xl rounded-md cursor-pointer hover:bg-white hover:text-pink-500 transition-all duration-300"
-            @click="audioStore.playSequence(sequenceStore.sequence)"
-        >
-            Tocar sequencia
-        </button>
         <div class="flex flex-col items-center gap-10">
             <h1 class="text-3xl text-black font-semibold">Opções:</h1>
             <div class="flex flex-wrap gap-5 justify-center">
@@ -94,6 +81,24 @@
             </div>
         </div>
 
+        <div class="flex flex-col items-center gap-10">
+            <h1 class="text-3xl text-black font-semibold">Sequência:</h1>
+            <div class="flex flex-wrap gap-5 justify-center">
+                <SoundSequence
+                    v-for="(sound, index) in sequenceStore.sequence" :key="index"
+                    :sound="sound"
+                    :index="index"
+                    @play-audio.="audioStore.playAudio"
+                />
+            </div>
+            <button class="px-8 py-3 bg-pink-500 border-2 border-pink-500 text-2xl rounded-md cursor-pointer hover:bg-white hover:text-pink-500 transition-all duration-300"
+            @click="audioStore.playSequence(sequenceStore.sequence)"
+            >
+                Tocar sequencia
+            </button>
+        </div>
+
+        
         <button 
             class="px-8 py-3 bg-pink-500 border-2 border-pink-500 text-2xl rounded-md cursor-pointer hover:bg-white hover:text-pink-500 transition-all duration-300"
             @click="backHome"

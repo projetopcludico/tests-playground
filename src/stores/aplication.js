@@ -23,7 +23,7 @@ export const useAplicationStore = defineStore('aplicationStore', () => {
                 id: 1,
                 title: "Fácil",
                 description: "Você terá 1 minuto e 30 segundos para adivinhar o som que falta na sequência, clique no som que você queira descobrir e responda até acertar todos os 5 padrões",
-                howToUse: "Na sequência abaixo você terá um padrão de repetições de 3 sons diferentes, você terá que descobrir o único som que está faltando e que possui um ? e é indicado pelo som semelhante à uma notificação. Selecione ele e responda com as opções que estão abaixo da sequência.",
+                howToUse: "Na sequência abaixo das opções de resposta você terá um padrão de repetições de 3 sons diferentes, você terá que descobrir o único som que está faltando e que possui um ? e é indicado pelo som semelhante à uma notificação. Selecione ele e responda com as opções que estão abaixo.",
                 params: {
                     dificulty: 'easy', 
                     numberSounds: 3, 
@@ -36,7 +36,7 @@ export const useAplicationStore = defineStore('aplicationStore', () => {
                 id: 2,
                 title: "Médio",
                 description: "Você terá 1 minuto e 30 segundos para adivinhar os 2 sons que faltam na sequência, clique no som que você queira descobrir e responda até acertar todos os 5 padrões",
-                howToUse: "Na sequência abaixo você terá um padrão de repetições de 4 sons diferentes, você terá que descobrir os 2 sons que estão faltando, que possuem um ícone ? e são indicados pelo som semelhante à uma notificação. Selecione qual você quer e responda com as opções que estão abaixo da sequência.",
+                howToUse: "Na sequência abaixo das opções de resposta você terá um padrão de repetições de 4 sons diferentes, você terá que descobrir os 2 sons que estão faltando, que possuem um ícone ? e são indicados pelo som semelhante à uma notificação. Selecione qual você quer e responda com as opções que estão abaixo.",
                 params: {
                     dificulty: 'medium', 
                     numberSounds: 4, 
@@ -49,7 +49,7 @@ export const useAplicationStore = defineStore('aplicationStore', () => {
                 id: 3,
                 title: "Difícil",
                 description: "Você terá 2 minutos e 30 segundos para adivinhar os 3 sons que faltam na sequência, clique no som que você queira descobrir e responda até acertar todos os 5 padrões",
-                howToUse: "Na sequência abaixo você terá um padrão de repetições de 5 sons diferentes, você terá que descobrir os 3 sons que estão faltando, que possuem um ícone ? e são indicados pelo som semelhante à uma notificação. Selecione qual você quer e responda com as opções que estão abaixo da sequência.",
+                howToUse: "Na sequência abaixo das opções de resposta você terá um padrão de repetições de 5 sons diferentes, você terá que descobrir os 3 sons que estão faltando, que possuem um ícone ? e são indicados pelo som semelhante à uma notificação. Selecione qual você quer e responda com as opções que estão abaixo.",
                 params: {
                     dificulty: 'hard',
                     numberSounds: 5, 
