@@ -64,7 +64,7 @@
             <p>Tempo restante: {{ timeStamp.formattedTime }}</p>
         </div>
 
-        <div class="flex items-center text-black gap-10">
+        <div class="flex flex-col items-center text-black gap-10 md:flex-row">
             <h1 class="text-2xl">Instruções</h1>
             <p class="text-xl p-4 border-pink-500 border-l-2 rounded-md shadow-xl">{{ aplicationStore.aplication.themes.sounds.difficulties[props.dificulty].howToUse }}</p>
         </div>
