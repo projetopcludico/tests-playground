@@ -16,6 +16,7 @@
     const router = useRouter();
 
     const props = defineProps({
+        dificulty: String,
         numberSounds: String,
         size: String,
         discover: String,
@@ -61,6 +62,11 @@
         <div class="flex flex-col gap-5 text-black text-2xl md:text-center">
             <p>Acertos: {{ aplicationStore.aplication.themes.sounds.countResponses }}/{{ aplicationStore.aplication.themes.sounds.required }}</p>
             <p>Tempo restante: {{ timeStamp.formattedTime }}</p>
+        </div>
+
+        <div class="flex items-center text-black gap-10">
+            <h1 class="text-2xl">Instruções</h1>
+            <p class="text-xl p-4 border-pink-500 border-l-2 rounded-md shadow-xl">{{ aplicationStore.aplication.themes.sounds.difficulties[props.dificulty].howToUse }}</p>
         </div>
 
         <div class="flex flex-wrap gap-5 justify-center">
