@@ -70,15 +70,12 @@
 
 <template>
 
-    <a href="#"
-        @click="respond(props.sound.id, props.sound, props.sound.path)"
-        @focus="emits('playAudio', props.sound.path)"
-    >
-        <div class="flex flex-col w-20 h-20 items-center justify-center rounded-md"
+        <button class="flex flex-col w-20 h-20 items-center justify-center rounded-md"
             :style="{ backgroundColor: props.sound.color}"
+            @click="respond(props.sound.id, props.sound, props.sound.path)"
+            @focus="emits('playAudio', props.sound.path)"
         >
             <p class="text-2xl">{{ props.sound.name }}</p>
-        </div>
-    </a>
+        </button>
 
 </template>

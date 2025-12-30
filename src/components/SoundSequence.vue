@@ -17,20 +17,18 @@
 
 <template>
 
-    <a  href="#"
-        :aria-label="props.sound.object.name == 'discover' ? 'som que você tem que descobrir, clique para selecionar' : `som ${props.index + 1}`" 
-        @click="click"
-        @focus="emits('playAudio', props.sound.object.path)"                
-    >
-        <div 
+        <button
             :class="
                 props.index === sequenceStore.selectedIndex
                 ? 'flex flex-col bg-pink-500/50 items-center justify-center w-20 h-20 border rounded-md' 
                 : 'flex flex-col bg-pink-500 items-center justify-center w-20 h-20 border border-black rounded-md'
             "
+            :aria-label="props.sound.object.name == 'discover' ? 'som que você tem que descobrir, clique para selecionar' : `som ${props.index + 1}`" 
+            @click="click"
+            @focus="emits('playAudio', props.sound.object.path)"   
+            
         >
              <span aria-hidden="true" class="text-4xl" :class="props.sound.object.icon"></span>
-        </div>
-    </a>
+        </button>
 
 </template>
