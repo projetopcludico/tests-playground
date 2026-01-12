@@ -1,66 +1,91 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, registerRuntimeCompiler } from 'vue'
 
 export const useNumberStore = defineStore('numberStore', () => {
+  const fullSequence = ref([])
+  const hiddenIndex = ref(0)
 
-    const fullSequence = ref([]);
-    const hiddenIndex = ref(0);
-    const patternType = ref('progressao');
-    const patternValue = ref(1);
+  const patternType = ref('progressao')
+  const patternValue = ref(1)
 
+  const options = ref([])
+  const correctIndex = ref(null)
 
-    const visibleSequence = computed(() => fullSequence.value.slice(0, hiddenIndex.value));
-    const correctAnswer = computed(() => fullSequence.value[hiddenIndex.value]);
+  const visibleSequence = computed(() => fullSequence.value.slice(0, hiddenIndex.value))
+  const correctAnswer = computed(() => fullSequence.value[hiddenIndex.value])
 
-    function generateSequence(length = 5) {
-        const start = Math.floor(Math.random() * 5) + 1;
+  function generateSequence(length) {
+    const start = Math.floor(Math.random() * 5) + 1
 
-        switch (patternType.value) {
+    switch (patternType.value) {
+      case 'progressao':
+        fullSequence.value = Array.from({ length }, (_, i) => {
+          return start + i * patternValue.value
+        })
+        break
 
-            case 'progressao':
-                fullSequence.value = Array.from({ length }, (_, i) => {
-                    return start + i * patternValue.value
-                });
-                break;
-            
-            case 'multiplicacao':
-                fullSequence.value = Array.from({ length }, (_, i) => {
-                    return start * Math.pow(patternValue.value, i);
-                });
-                break;
+      case 'multiplicacao':
+        fullSequence.value = Array.from({ length }, (_, i) => {
+          return start * Math.pow(patternValue.value, i)
+        })
+        break
 
-            case 'alternado':
-                fullSequence.value = Array.from({ length }, (_, i) => {
-                    return i % 2 === 0 ? start : start + patternValue.value
-                });
-                break;
-                
-        }
-
-        hiddenIndex.value = length - 1;
+      case 'alternado':
+        fullSequence.value = Array.from({ length }, (_, i) => {
+          return i % 2 === 0 ? start : start + patternValue.value
+        })
+        break
     }
 
-    function randomPattern() {
-        const patterns = ['progressao', 'alternado', 'multiplicacao'];
-        return patterns[Math.floor(Math.random() * patterns.length)];
+    hiddenIndex.value = length - 1
+    generateAlternatives()
+  }
+
+  function randomPattern() {
+    const patterns = ['progressao', 'alternado', 'multiplicacao']
+    return patterns[Math.floor(Math.random() * patterns.length)]
+  }
+
+  function newRound(length = 5) {
+    patternType.value = randomPattern()
+    patternValue.value = Math.floor(Math.random() * 4) + 1
+    // Aqui poderíamos encaixar as dificuldades, no lugar do 4 fixo que está multiplicando o Math.random()
+    generateSequence(length);
+  }
+
+  function generateAlternatives() {
+    const correct = correctAnswer.value
+    const alternatives = new Set([correct])
+
+    while (alternatives.size < 4) {
+      const offset = Math.floor(Math.random() * 5) - 2
+      const candidate = correct + offset
+
+      if (candidate > 0) {
+        alternatives.add(candidate)
+      }
     }
 
-    function newRound() {
-        patternType.value = randomPattern();
-        patternValue.value = Math.floor(Math.random() * 4) + 1; 
-        // Aqui poderíamos encaixar as dificuldades, no lugar do 4 fixo que está multiplicando o Math.random()
-        generateSequence()
-    }
+    options.value = shuffle([...alternatives])
+    correctIndex.value = options.value.indexOf(correct)
+  }
 
-    function checkAnswer(value) {
-        return value = correctAnswer.value;
-    }
+  function shuffle(array) {
+    return array
+      .map(v => ({ v, r: Math.random() }))
+      .sort((a, b) => a.r - b.r)
+      .map(o => o.v)
+  }
 
-    return {
-        visibleSequence,
-        patternType,
-        checkAnswer,
-        newRound,
-    }
+  function checkAnswer(index) {
+    return index === correctIndex.value;
+  }
 
+  return {
+    visibleSequence,
+    options,
+    patternType,
+    checkAnswer,
+    newRound,
+  }
 })
