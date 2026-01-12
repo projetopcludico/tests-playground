@@ -1,6 +1,7 @@
 <script setup>
   import SequenceCardComp from '../components/numbers/SequenceCardComp.vue'
-  const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  import { useNumberStore } from '../stores/numbers';
+  const numberStore = useNumberStore();
 </script>
 <template>
   <main class="flex flex-col items-center">
