@@ -7,7 +7,7 @@
     });
 </script>
 <template>
-  <button class="h-20 w-20 bg-pink-500 text-white text-xl">
+  <button class="h-20 w-20 bg-pink-500 text-white text-xl rounded-md shadow-xl shadow-pink-300">
     {{ props.number }}
   </button>
 </template>
