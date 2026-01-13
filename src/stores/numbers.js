@@ -22,19 +22,37 @@ export const useNumberStore = defineStore('numberStore', () => {
         fullSequence.value = Array.from({ length }, (_, i) => {
           return start + i * patternValue.value
         })
-        break
+        break;
 
       case 'multiplicacao':
         fullSequence.value = Array.from({ length }, (_, i) => {
           return start * Math.pow(patternValue.value, i)
         })
-        break
+        break;
 
       case 'alternado':
         fullSequence.value = Array.from({ length }, (_, i) => {
           return i % 2 === 0 ? start : start + patternValue.value
         })
-        break
+        break;
+
+      case 'fibonacci': 
+        const sequence = [];
+
+        for(let cont = 0;cont < length; cont++) {
+          if(cont === 0) {
+            sequence.push(start);
+          } 
+          else if(cont === 1) {
+            sequence.push(start + 1);
+          } 
+          else {
+            sequence.push(sequence[cont - 1] + sequence[cont - 2]);
+          }
+        }
+
+        fullSequence.value = sequence;
+        break;
     }
 
     hiddenIndex.value = length - 1
@@ -42,7 +60,7 @@ export const useNumberStore = defineStore('numberStore', () => {
   }
 
   function randomPattern() {
-    const patterns = ['progressao', 'alternado', 'multiplicacao']
+    const patterns = ['progressao', 'alternado', 'multiplicacao', 'fibonacci'];
     return patterns[Math.floor(Math.random() * patterns.length)]
   }
 
