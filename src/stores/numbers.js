@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { useAplicationStore } from './aplication';
 
 export const useNumberStore = defineStore('numberStore', () => {
   const fullSequence = ref([])
@@ -102,8 +103,11 @@ export const useNumberStore = defineStore('numberStore', () => {
   }
 
   function checkAnswer(index) {
-    console.log(index === correctIndex.value)
-    return index === correctIndex.value;
+    const aplicationStore = useAplicationStore();
+    if(index === correctIndex.value) {
+      aplicationStore.aplication.themes.numbers.countResponses++
+      newRound(10);
+    }
   }
 
   return {

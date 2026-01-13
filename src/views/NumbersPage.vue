@@ -2,7 +2,9 @@
   import SequenceCardComp from '../components/numbers/SequenceCardComp.vue'
   import { onMounted } from 'vue'
   import { useNumberStore } from '../stores/numbers'
-  const numberStore = useNumberStore()
+  import { useAplicationStore } from '../stores/aplication'
+  const numberStore = useNumberStore();
+  const aplicationStore = useAplicationStore();
 
   onMounted(() => {
     numberStore.newRound(10)
@@ -11,6 +13,7 @@
 <template>
   <main class="flex flex-col items-center gap-10">
     <h1 class="text-4xl">Numbers Page</h1>
+    <p>Respostas corretas: {{ aplicationStore.aplication.themes.numbers.countResponses }}</p>
     <section class="flex flex-col items-center gap-2">
       <h2 class="text-2xl">Sequência de Números</h2>
       <div class="flex flex-wrap gap-5">
