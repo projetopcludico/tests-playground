@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed, registerRuntimeCompiler } from 'vue'
+import { ref, computed } from 'vue'
 
 export const useNumberStore = defineStore('numberStore', () => {
   const fullSequence = ref([])
@@ -10,9 +10,11 @@ export const useNumberStore = defineStore('numberStore', () => {
 
   const options = ref([])
   const correctIndex = ref(null)
+  const selectedNumber = ref(null);
 
   const visibleSequence = computed(() => fullSequence.value.slice(0, hiddenIndex.value))
-  const correctAnswer = computed(() => fullSequence.value[hiddenIndex.value])
+  const correctAnswer = computed(() => fullSequence.value[hiddenIndex.value]);
+  
 
   function generateSequence(length) {
     const start = Math.floor(Math.random() * 5) + 1
@@ -95,6 +97,10 @@ export const useNumberStore = defineStore('numberStore', () => {
       .map(o => o.v)
   }
 
+  function selectNumber(num) {
+    selectedNumber.value = num
+  }
+
   function checkAnswer(index) {
     return index === correctIndex.value;
   }
@@ -103,6 +109,7 @@ export const useNumberStore = defineStore('numberStore', () => {
     visibleSequence,
     options,
     patternType,
+    selectNumber,
     checkAnswer,
     newRound,
   }
