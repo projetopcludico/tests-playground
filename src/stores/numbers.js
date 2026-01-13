@@ -102,6 +102,7 @@ export const useNumberStore = defineStore('numberStore', () => {
   }
 
   function checkAnswer(index) {
+    console.log(index === correctIndex.value)
     return index === correctIndex.value;
   }
 
