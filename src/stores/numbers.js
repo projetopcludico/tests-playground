@@ -70,7 +70,8 @@ export const useNumberStore = defineStore('numberStore', () => {
   function newRound(length = 5) {
     patternType.value = randomPattern()
     patternValue.value = Math.floor(Math.random() * 4) + 1
-    // Aqui poderíamos encaixar as dificuldades, no lugar do 4 fixo que está multiplicando o Math.random()
+    if(patternValue.value <= 1) newRound(length);
+    
     generateSequence(length);
   }
 
