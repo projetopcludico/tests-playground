@@ -3,12 +3,21 @@
   import { onMounted } from 'vue'
   import { useNumberStore } from '../stores/numbers'
   import { useAplicationStore } from '../stores/aplication'
-  const numberStore = useNumberStore();
-  const aplicationStore = useAplicationStore();
+  const numberStore = useNumberStore()
+  const aplicationStore = useAplicationStore()
 
   onMounted(() => {
-    numberStore.newRound(10)
-  })
+    numberStore.generateSequence(6, 3, 3, 2, 'easy');
+  });
+
+  function respond(number) {
+    const response = numberStore.checkAnswer(number);
+    if(response) {
+      numberStore.generateSequence(6, 3, 3, 2, 'easy');
+      console.log('acertou');
+    }
+    console.log('errou');
+  }
 </script>
 <template>
   <main class="flex flex-col items-center gap-10">
@@ -23,8 +32,15 @@
     <section class="flex flex-col items-center gap-2">
       <h2 class="text-2xl">Qual número virá depois na sequência?</h2>
       <div class="flex flex-wrap gap-5">
-        <SequenceCardComp v-for="(number, index) of numberStore.options" :index="index" :number="number" :respond="true" @respond="numberStore.checkAnswer"/>
+        <SequenceCardComp
+          v-for="(number, index) of numberStore.options"
+          :index="index"
+          :number="number"
+          :respond="true"
+          @respond="respond"
+        />
       </div>
     </section>
+    <div>{{ numberStore.correctNumber }}</div>
   </main>
 </template>
