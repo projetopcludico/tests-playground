@@ -44,7 +44,7 @@ export const useSequenceStore = defineStore('sequence', () => {
   const correctResponses = ref([])
   const responses = ref([])
   const finalChoices = ref([])
-  const selectedIndex = ref(null)
+  const selectedChoice = ref(null)
 
   const difficulty = ref('')
   const visibleSequence = ref([])
@@ -106,9 +106,11 @@ export const useSequenceStore = defineStore('sequence', () => {
     selectedIndex.value   = null
   }
 
-  function selectDiscover(index) {
-    if (sequence.value[index]?.object.name === 'discover') {
-      selectedIndex.value = index
+  function selectChoice(choiceObject) {
+    if (selectedChoice.value?.id === choiceObject.id) {
+      selectedChoice.value = null
+    } else {
+      selectedChoice.value = { ...choiceObject }
     }
   }
 
@@ -118,40 +120,32 @@ export const useSequenceStore = defineStore('sequence', () => {
     }
   }
 
-  /**
-   * Valida a resposta do usuário para a posição selecionada.
-   * Retorna 'correct' | 'wrong' | 'noop' para facilitar feedback na view.
-   *
-   * @param {number} choiceId     - ID do objeto escolhido
-   * @param {Object} choiceObject - Objeto completo escolhido
-   * @param {'sounds'|'forms'} theme - Tema ativo, para incrementar o contador correto
-   * @returns {'correct'|'wrong'|'noop'}
-   */
-  function answerObjectSequence(choiceId, choiceObject, theme) {
-    const index = selectedIndex.value
-    if (index === null || index === undefined) return 'noop'
-
-    const expected = correctResponses.value[index]
+  function answerObjectSequence(discoverIndex, theme) {
+    if (selectedChoice.value === null) return 'noop'
+ 
+    const item = sequence.value[discoverIndex]
+    if (!item || item.object.name !== 'discover') return 'noop'
+ 
+    const expected = correctResponses.value[discoverIndex]
     if (expected === undefined) {
-      console.warn('[sequence] Posição sem resposta registrada:', index)
-      selectedIndex.value = null
+      console.warn('[sequence] Posição sem resposta registrada:', discoverIndex)
       return 'noop'
     }
-
-    if (expected !== choiceId) {
-      selectedIndex.value = null
+ 
+    if (expected !== selectedChoice.value.id) {
+      selectedChoice.value = null
       return 'wrong'
     }
-
-    responses.value.push({ index, id: choiceId })
-    revealChoice(index, choiceObject)
-    selectedIndex.value = null
-
+ 
+    responses.value.push({ index: discoverIndex, id: selectedChoice.value.id })
+    revealChoice(discoverIndex, selectedChoice.value)
+    selectedChoice.value = null
+ 
     if (isObjectSequenceComplete.value && verifyResponse(responses.value, correctResponses.value)) {
       if (theme === 'sounds') applicationStore.incrementSoundResponses()
       else if (theme === 'forms') applicationStore.incrementFormResponses()
     }
-
+ 
     return 'correct'
   }
 
@@ -215,7 +209,7 @@ export const useSequenceStore = defineStore('sequence', () => {
     correctResponses,
     responses,
     finalChoices,
-    selectedIndex,
+    selectedChoice,
 
     // Estado — números
     difficulty,
@@ -229,7 +223,7 @@ export const useSequenceStore = defineStore('sequence', () => {
 
     // Actions — objetos
     mountObjectSequence,
-    selectDiscover,
+    selectChoice,
     revealChoice,
     answerObjectSequence,
 
