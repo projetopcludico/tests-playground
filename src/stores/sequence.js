@@ -103,7 +103,7 @@ export const useSequenceStore = defineStore('sequence', () => {
     correctResponses.value = correct
     finalChoices.value    = choices
     responses.value       = []
-    selectedIndex.value   = null
+    selectedChoice.value   = null
   }
 
   function selectChoice(choiceObject) {

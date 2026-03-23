@@ -1,6 +1,8 @@
 <script setup>
 import ConfigButton from '@/components/ConfigButton.vue'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 
 const mode = ref('campaign')
 const theme = ref('numbers')
@@ -17,9 +19,12 @@ function changeTheme(newTheme) {
 function changeDifficulty(newDifficulty) {
   difficulty.value = newDifficulty
 }
+
+const configRoute = computed(() => `/${theme.value}/${difficulty.value}`)
+const start = () => router.push(configRoute.value)
 </script>
 <template>
-  <div class="flex flex-col gap-10">
+  <div class="w-full flex flex-col gap-10">
     <div class="w-full flex flex-col items-center gap-2 text-slate-900">
       <h1 class="font-bold text-4xl">Configure seu jogo</h1>
       <p class="text-lg">Selecione o modo, o tema e a dificulade do jogo</p>
@@ -87,6 +92,14 @@ function changeDifficulty(newDifficulty) {
           mode="outline"
         />
       </div>
+    </div>
+    <div class="w-full text-center">
+      <button
+        class="w-1/2 h-12 border border-orange-400 bg-orange-400 text-2xl text-white rounded-xl cursor-pointer transition-all duration-200 hover:bg-white hover:text-orange-400"
+        @click="start"
+      >
+        Jogar
+      </button>
     </div>
   </div>
 </template>

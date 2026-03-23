@@ -1,5 +1,5 @@
 <template>
-  <main class="p-10">
+  <main>
     <RouterView/>
   </main>
 </template>

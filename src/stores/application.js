@@ -47,30 +47,30 @@ const NUMBER_DIFFICULTIES = Object.freeze({
 })
 
 const FORM_SYMBOLS = Object.freeze([
-  { id: 1, name: 'circle',    icon: 'mdi mdi-circle-outline'    },
-  { id: 2, name: 'rectangle', icon: 'mdi mdi-rectangle-outline' },
-  { id: 3, name: 'pentagon',  icon: 'mdi mdi-pentagon-outline'  },
-  { id: 4, name: 'triangle',  icon: 'mdi mdi-triangle-outline'  },
-  { id: 5, name: 'square',    icon: 'mdi mdi-square-outline'    },
+  { id: 1, name: 'circle',    icon: 'mdi mdi-circle', color: '#FF6357', background: '#FF9E97' },
+  { id: 2, name: 'rectangle', icon: 'mdi mdi-rectangle', color: '#87CE57', background: '#BFFF95' },
+  { id: 3, name: 'pentagon',  icon: 'mdi mdi-pentagon', color: '#AC37FF', background: '#D599FF' },
+  { id: 4, name: 'triangle',  icon: 'mdi mdi-triangle', color: '#D5C359', background: '#FBE97D' },
+  { id: 5, name: 'square',    icon: 'mdi mdi-square', color: '#44BBFF', background: '#A0DCFF' },
 ])
 
 const FORM_DIFFICULTIES = Object.freeze({
   easy: Object.freeze({
     id: 1,
     title: 'Fácil',
-    timeLimit: 30_000,
+    timeLimit: 90,
     params: Object.freeze({ difficulty: 'easy',   numberForms: 2, size: 6,  discovers: 1 }),
   }),
   medium: Object.freeze({
     id: 2,
     title: 'Médio',
-    timeLimit: 30_000,
+    timeLimit: 90,
     params: Object.freeze({ difficulty: 'medium', numberForms: 2, size: 12, discovers: 2 }),
   }),
   hard: Object.freeze({
     id: 3,
     title: 'Difícil',
-    timeLimit: 30_000,
+    timeLimit: 90,
     params: Object.freeze({ difficulty: 'hard',   numberForms: 3, size: 18, discovers: 3 }),
   }),
 })
