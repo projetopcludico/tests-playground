@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { useApplicationStore } from './application'
-import { shuffle } from '../utils/shuffle'
-import { useSortOperation, executeOperation } from '../utils/operation'
+import shuffle from '@/utils/shuffle'
+import { useSortOperation, executeOperation } from '@/utils/operation'
 import sortObjects from '@/utils/sort'
 import verifyResponse from '@/utils/verifyResponse'
 
