@@ -12,7 +12,7 @@ import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 
-onMounted(() => {
+function tryAgain() {
   const currentDifficulty = route.params.difficulty
   const params = applicationStore.formDifficulties[currentDifficulty].params
   const { timeLimit } = applicationStore.formDifficulties[currentDifficulty]
@@ -27,7 +27,9 @@ onMounted(() => {
   timeStamp.start(true, timeLimit, () => {
     console.warn('Acabou o tempo!')
   })
-})
+}
+
+onMounted(tryAgain)
 
 onUnmounted(() => {
   timeStamp.reset()
@@ -67,14 +69,18 @@ onUnmounted(() => {
         </div>
         <div class="flex flex-wrap gap-5">
           <GameButton
-            v-for="symbol in sequenceStore.sequence"
+            v-for="(symbol, index) in sequenceStore.sequence"
             :id="symbol.object.id"
             :icon="symbol.object.icon"
             :color="symbol.object.color"
             :background="symbol.object.background"
             :name="symbol.object.name"
             :class="[sequenceStore.selectedChoice && symbol.object.name === 'discover' && 'animate-shake']"
+            @select="sequenceStore.answerObjectSequence(index, 'forms', tryAgain)"
           />
+        </div>
+        <div class="text-white text-2xl">
+          <p>Acertos: {{ applicationStore.formResponses }}/{{ applicationStore.requiredResponses.forms }}</p>
         </div>
       </div>
     </section>

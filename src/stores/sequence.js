@@ -99,11 +99,11 @@ export const useSequenceStore = defineStore('sequence', () => {
       return true
     })
 
-    sequence.value        = built
+    sequence.value = built
     correctResponses.value = correct
-    finalChoices.value    = choices
-    responses.value       = []
-    selectedChoice.value   = null
+    finalChoices.value = choices
+    responses.value = []
+    selectedChoice.value = null
   }
 
   function selectChoice(choiceObject) {
@@ -120,9 +120,13 @@ export const useSequenceStore = defineStore('sequence', () => {
     }
   }
 
-  function answerObjectSequence(discoverIndex, theme) {
+  function answerObjectSequence(discoverIndex, theme, fallBack) {
     if (selectedChoice.value === null) return 'noop'
- 
+    if(typeof fallBack !== 'function') {
+      console.error('fallBack não é uma função')
+      return 'noop'
+    }
+
     const item = sequence.value[discoverIndex]
     if (!item || item.object.name !== 'discover') return 'noop'
  
@@ -144,6 +148,10 @@ export const useSequenceStore = defineStore('sequence', () => {
     if (isObjectSequenceComplete.value && verifyResponse(responses.value, correctResponses.value)) {
       if (theme === 'sounds') applicationStore.incrementSoundResponses()
       else if (theme === 'forms') applicationStore.incrementFormResponses()
+        
+      if(fallBack) {
+        fallBack();
+      }
     }
  
     return 'correct'
