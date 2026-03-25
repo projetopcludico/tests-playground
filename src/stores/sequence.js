@@ -143,7 +143,6 @@ export const useSequenceStore = defineStore('sequence', () => {
  
     responses.value.push({ index: discoverIndex, id: selectedChoice.value.id })
     revealChoice(discoverIndex, selectedChoice.value)
-    selectedChoice.value = null
  
     if (isObjectSequenceComplete.value && verifyResponse(responses.value, correctResponses.value)) {
       if (theme === 'sounds') applicationStore.incrementSoundResponses()

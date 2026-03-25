@@ -10,7 +10,7 @@ const router = createRouter({
     },
     {
       path: '/forms/:difficulty/',
-      name: 'form-view',
+      name: 'forms-view',
       component: () => import('@/views/games/FormView.vue'),
       beforeEnter: (to, from) => {
         const difficulty = to.params.difficulty;
@@ -19,6 +19,11 @@ const router = createRouter({
           return '/'
         }
       }
+    },
+    {
+      path: '/feedback/:hits/:required/:mode/:difficulty/',
+      name: 'feedback-view',
+      component: () => import('@/views/games/FeedBackView.vue'),
     }
   ],
 })
