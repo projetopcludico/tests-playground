@@ -72,6 +72,7 @@ onUnmounted(() => {
             :color="symbol.object.color"
             :background="symbol.object.background"
             :name="symbol.object.name"
+            :class="[sequenceStore.selectedChoice && symbol.object.name === 'discover' && 'animate-shake']"
           />
         </div>
       </div>
