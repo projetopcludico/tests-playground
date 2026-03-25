@@ -24,7 +24,7 @@ const configRoute = computed(() => `/${theme.value}/${difficulty.value}`)
 const start = () => router.push(configRoute.value)
 </script>
 <template>
-  <div class="w-full flex flex-col gap-10">
+  <div class="w-full flex flex-col gap-10 p-10">
     <div class="w-full flex flex-col items-center gap-2 text-slate-900">
       <h1 class="font-bold text-4xl">Configure seu jogo</h1>
       <p class="text-lg">Selecione o modo, o tema e a dificulade do jogo</p>
