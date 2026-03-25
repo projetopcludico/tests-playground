@@ -35,7 +35,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-20 bg-zinc-800 p-10 min-h-screen">
+  <div class="flex flex-col gap-20 p-10 min-h-screen bg-[linear-gradient(to_bottom,rgba(0,0,0,0),rgba(0,0,0,0.65)),url('/images/egypt-background.svg')] bg-cover bg-center">
     <section class="flex items-center justify-between text-4xl text-zinc-400">
       <span class="mdi mdi-home cursor-pointer" @click="router.push('/')"></span>
       <span class="mdi mdi-cog cursor-pointer"></span>
@@ -62,6 +62,7 @@ onUnmounted(() => {
             :background="symbol.background"
             @select="sequenceStore.selectChoice(symbol)"
             :selected="sequenceStore.selectedChoice?.id === parseInt(symbol.id)"
+            class="cursor-pointer"
           />
         </div>
         <div class="flex flex-wrap gap-5">

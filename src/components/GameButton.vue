@@ -18,7 +18,7 @@ const emits = defineEmits(['select'])
 const buttonStyle = computed(() => {
     if(props.name === 'discover') return {
         color: '#ffffff',
-
+        backgroundColor: '#000000'
     }
     return {
         color: props.color,
@@ -31,7 +31,7 @@ const buttonStyle = computed(() => {
   <button
     :style="buttonStyle"
     :class="[
-      'w-25 h-25 flex flex-col items-center justify-center rounded-xl border-3 transition-all duration-200',
+      'w-25 h-25 flex flex-col items-center justify-center rounded-xl border-3 transition-all duration-200 focus:scale-105',
       props.selected && 'border-white animate-highlight',
       props.name === 'discover' && 'cursor-pointer'
     ]"
