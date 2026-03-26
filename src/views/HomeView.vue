@@ -5,7 +5,7 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 
 const mode = ref('campaign')
-const theme = ref('numbers')
+const theme = ref('forms')
 const difficulty = ref('easy')
 
 function changeMode(newMode) {
@@ -50,13 +50,6 @@ const start = () => router.push(configRoute.value)
       <div class="w-full grid grid-cols-3 gap-3">
         <h3 class="font-bold text-lg text-orange-400 col-span-3">2. ESCOLHA O TEMA DO JOGO</h3>
         <ConfigButton
-          text="Números"
-          icon="mdi mdi-numeric-7-box-multiple"
-          @click="changeTheme('numbers')"
-          :selected="theme === 'numbers'"
-          mode="outline"
-        />
-        <ConfigButton
           text="Formas"
           icon="mdi mdi-shape"
           @click="changeTheme('forms')"
@@ -68,6 +61,13 @@ const start = () => router.push(configRoute.value)
           icon="mdi mdi-waveform"
           @click="changeTheme('sounds')"
           :selected="theme === 'sounds'"
+          mode="outline"
+        />
+        <ConfigButton
+          text="Números"
+          icon="mdi mdi-numeric-7-box-multiple"
+          @click="changeTheme('numbers')"
+          :selected="theme === 'numbers'"
           mode="outline"
         />
       </div>

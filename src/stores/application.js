@@ -95,11 +95,11 @@ const NUMBER_DIFFICULTIES = Object.freeze({
 })
 
 const FORM_SYMBOLS = Object.freeze([
-  { id: 1, name: 'circle', icon: 'mdi mdi-circle', color: '#FF6357', background: '#FF9E97' },
-  { id: 2, name: 'rectangle', icon: 'mdi mdi-rectangle', color: '#87CE57', background: '#BFFF95' },
-  { id: 3, name: 'pentagon', icon: 'mdi mdi-pentagon', color: '#AC37FF', background: '#D599FF' },
-  { id: 4, name: 'triangle', icon: 'mdi mdi-triangle', color: '#D5C359', background: '#FBE97D' },
-  { id: 5, name: 'square', icon: 'mdi mdi-square', color: '#44BBFF', background: '#A0DCFF' },
+  { id: 1, name: 'Abutre', icon: '/images/icons/abutre.svg', color: '#FF6357', background: '#FF9E97' },
+  { id: 2, name: 'Vaso Canopo', icon: '/images/icons/canopo.svg', color: '#87CE57', background: '#BFFF95' },
+  { id: 3, name: 'Egípcio', icon: '/images//icons/egipcio.svg', color: '#AC37FF', background: '#D599FF' },
+  { id: 4, name: 'Esfinge', icon: '/images//icons/esfinge.svg', color: '#D5C359', background: '#FBE97D' },
+  { id: 5, name: 'Pilo', icon: '/images//icons/pilo.svg', color: '#44BBFF', background: '#A0DCFF' },
 ])
 
 const FORM_DIFFICULTIES = Object.freeze({
@@ -126,9 +126,9 @@ const FORM_DIFFICULTIES = Object.freeze({
 const REQUIRED_RESPONSES = Object.freeze({ sounds: 5, numbers: 5, forms: 5 })
 
 const GAME_FLOW = [
+  Object.freeze({ mode: 'forms', route: '/forms/:difficulty' }),
   Object.freeze({ mode: 'sounds', route: '/sounds/:difficulty' }),
   Object.freeze({ mode: 'numbers', route: '/numbers/:difficulty' }),
-  Object.freeze({ mode: 'forms', route: '/forms/:difficulty' }),
 ]
 
 export const useApplicationStore = defineStore('applicationStore', () => {

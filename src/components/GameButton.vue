@@ -21,8 +21,8 @@ const buttonStyle = computed(() => {
         backgroundColor: '#000000'
     }
     return {
-        color: color,
-        backgroundColor: background
+        backgroundColor: background,
+        borderColor: color
     }
 })
 </script>
@@ -37,7 +37,15 @@ const buttonStyle = computed(() => {
     ]"
     @click="emits('select')"
   >
-    <span :class="[icon, 'text-6xl']"></span>
+    <span v-if="name === 'discover'" :class="[icon, 'text-6xl']"></span>
+    <div v-else
+      class="w-3/5 h-3/5"
+      :style="{
+        backgroundColor: color,
+        mask: `url(${icon}) no-repeat center / contain`,
+        WebkitMask: `url(${icon}) no-repeat center / contain`
+      }"
+    ></div>
   </button>
 </template>
 
