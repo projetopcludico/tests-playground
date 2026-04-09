@@ -202,7 +202,6 @@ export const useSequenceStore = defineStore('sequence', () => {
       built[idx].object.name = 'discover'
     }
  
-    // As opções de resposta são os números ocultos, embaralhados
     const hiddenNumbers = randomIndexes.map((idx) => ({
       id: idx + 1,
       value: rawSeq[idx],
