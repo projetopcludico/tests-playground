@@ -147,6 +147,7 @@ export const useSequenceStore = defineStore('sequence', () => {
     if (isObjectSequenceComplete.value && verifyResponse(responses.value, correctResponses.value)) {
       if (theme === 'sounds') applicationStore.incrementSoundResponses()
       else if (theme === 'forms') applicationStore.incrementFormResponses()
+      else if (theme === 'numbers') applicationStore.incrementNumberResponses()
         
       if(fallBack) {
         fallBack();
@@ -164,50 +165,55 @@ export const useSequenceStore = defineStore('sequence', () => {
    * @param {number} amountOperations - Quantidade de operações distintas no padrão
    * @param {number} maxOperator      - Valor máximo do operando
    * @param {number} maxStart         - Valor máximo do número inicial
-   * @param {string} levelDifficulty  - Rótulo de dificuldade ('easy' | 'medium' | 'hard')
    */
-  function generateNumberSequence(length, amountOperations, maxOperator, maxStart, levelDifficulty) {
+  function generateNumberSequence(length, amountOperations, maxOperator, maxStart, numberDiscover) {
     if (length <= amountOperations) {
-      console.error(
-        `[sequence] Tamanho da sequência (${length}) deve ser maior que o nº de operações (${amountOperations})`
-      )
+      console.error(`Tamanho da sequência (${length}) deve ser maior que o número de operações (${amountOperations})`)
       return
     }
-
+ 
     const { exportedOperations, operators } = useSortOperation(amountOperations, maxOperator)
     if (!exportedOperations.length) {
-      console.error('[sequence] Nenhuma operação foi gerada.')
+      console.error('Nenhuma operação foi gerada.')
       return
     }
-
-    difficulty.value = levelDifficulty
-
+ 
     const startNumber = Math.floor(Math.random() * maxStart) + 1
-    const seq = [startNumber]
+    const rawSeq = [startNumber]
     let opIndex = 0
-
-    while (seq.length <= length) {
+ 
+    while (rawSeq.length <= length) {
       if (opIndex >= exportedOperations.length) opIndex = 0
-      seq.push(executeOperation(exportedOperations[opIndex], seq.at(-1), operators[opIndex]))
+      rawSeq.push(executeOperation(exportedOperations[opIndex], rawSeq.at(-1), operators[opIndex]))
       opIndex++
     }
-
-    correctNumber.value  = seq.pop()
-    visibleSequence.value = seq
-    numberOptions.value  = buildNumberAlternatives(correctNumber.value)
-  }
-
-  /**
-   * Verifica se o número fornecido é a resposta correta.
-   * Incrementa o contador de acertos no store de aplicação em caso positivo.
-   *
-   * @param {number} num - Número escolhido pelo usuário
-   * @returns {boolean}
-   */
-  function checkNumberAnswer(num) {
-    if (num !== correctNumber.value) return false
-    applicationStore.incrementNumberResponses()
-    return true
+ 
+    const built = rawSeq.map((value, i) => ({
+      id: i + 1,
+      object: { id: i + 1, value, name: 'number' },
+    }))
+ 
+    const discoverCount = Math.min(numberDiscover, built.length)
+    const randomIndexes = getRandomIndexes(built.length, discoverCount)
+    const correct = Array(built.length).fill(null)
+ 
+    for (const idx of randomIndexes) {
+      correct[idx] = built[idx].object.id
+      built[idx].object.name = 'discover'
+    }
+ 
+    // As opções de resposta são os números ocultos, embaralhados
+    const hiddenNumbers = randomIndexes.map((idx) => ({
+      id: idx + 1,
+      value: rawSeq[idx],
+      name: 'number',
+    }))
+ 
+    sequence.value = built
+    correctResponses.value = correct
+    finalChoices.value = shuffle(hiddenNumbers)
+    responses.value = []
+    selectedChoice.value = null
   }
 
   return {
@@ -236,6 +242,5 @@ export const useSequenceStore = defineStore('sequence', () => {
 
     // Actions — números
     generateNumberSequence,
-    checkNumberAnswer,
   }
 })
