@@ -68,6 +68,8 @@ const NUMBER_DIFFICULTIES = Object.freeze({
       amountOperations: 2,
       maxOperator: 3,
       maxStart: 5,
+      numberDiscover: 1,
+      timeLimit: 90
     }),
   }),
   medium: Object.freeze({
@@ -79,6 +81,8 @@ const NUMBER_DIFFICULTIES = Object.freeze({
       amountOperations: 3,
       maxOperator: 5,
       maxStart: 10,
+      numberDiscover: 2,
+      timeLimit: 120
     }),
   }),
   hard: Object.freeze({
@@ -90,6 +94,8 @@ const NUMBER_DIFFICULTIES = Object.freeze({
       amountOperations: 4,
       maxOperator: 9,
       maxStart: 20,
+      numberDiscover: 3,
+      timeLimit: 150
     }),
   }),
 })

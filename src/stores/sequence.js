@@ -7,12 +7,10 @@ import sortObjects from '@/utils/sort'
 import verifyResponse from '@/utils/verifyResponse'
 
 function getRandomIndexes(max, count) {
-  const indexes = new Set()
-  while (indexes.size < count) {
-    const index = Math.floor(Math.random() * max)
-    if (index !== 0) indexes.add(index)
-  }
-  return [...indexes].sort((a, b) => a - b)
+  const possible = Array.from({ length: max }, (_, i) => i).filter((i) => i !== 0)
+  return shuffle(possible)
+    .slice(0, count)
+    .sort((a, b) => a - b)
 }
 
 function buildNumberAlternatives(correct, total = 5) {
@@ -36,7 +34,6 @@ function buildNumberAlternatives(correct, total = 5) {
   return shuffle([...alternatives])
 }
 
-
 export const useSequenceStore = defineStore('sequence', () => {
   const applicationStore = useApplicationStore()
 
@@ -51,13 +48,9 @@ export const useSequenceStore = defineStore('sequence', () => {
   const correctNumber = ref(null)
   const numberOptions = ref([])
 
-  const pendingCount = computed(() =>
-    correctResponses.value.filter((id) => id !== null).length
-  )
+  const pendingCount = computed(() => correctResponses.value.filter((id) => id !== null).length)
 
-  const isObjectSequenceComplete = computed(
-    () => responses.value.length === pendingCount.value
-  )
+  const isObjectSequenceComplete = computed(() => responses.value.length === pendingCount.value)
 
   /**
    * Monta uma sequência de objetos (formas ou sons) com lacunas a descobrir.
@@ -122,38 +115,38 @@ export const useSequenceStore = defineStore('sequence', () => {
 
   function answerObjectSequence(discoverIndex, theme, fallBack) {
     if (selectedChoice.value === null) return 'noop'
-    if(typeof fallBack !== 'function') {
+    if (typeof fallBack !== 'function') {
       console.error('fallBack não é uma função')
       return 'noop'
     }
 
     const item = sequence.value[discoverIndex]
     if (!item || item.object.name !== 'discover') return 'noop'
- 
+
     const expected = correctResponses.value[discoverIndex]
     if (expected === undefined) {
       console.warn('[sequence] Posição sem resposta registrada:', discoverIndex)
       return 'noop'
     }
- 
+
     if (expected !== selectedChoice.value.id) {
       selectedChoice.value = null
       return 'wrong'
     }
- 
+
     responses.value.push({ index: discoverIndex, id: selectedChoice.value.id })
     revealChoice(discoverIndex, selectedChoice.value)
- 
+
     if (isObjectSequenceComplete.value && verifyResponse(responses.value, correctResponses.value)) {
       if (theme === 'sounds') applicationStore.incrementSoundResponses()
       else if (theme === 'forms') applicationStore.incrementFormResponses()
       else if (theme === 'numbers') applicationStore.incrementNumberResponses()
-        
-      if(fallBack) {
-        fallBack();
+
+      if (fallBack) {
+        fallBack()
       }
     }
- 
+
     return 'correct'
   }
 
@@ -166,53 +159,83 @@ export const useSequenceStore = defineStore('sequence', () => {
    * @param {number} maxOperator      - Valor máximo do operando
    * @param {number} maxStart         - Valor máximo do número inicial
    */
-  function generateNumberSequence(length, amountOperations, maxOperator, maxStart, numberDiscover) {
+  function generateNumberSequence(
+    length,
+    amountOperations,
+    maxOperator,
+    maxStart,
+    numberDiscover,
+  ) {
     if (length <= amountOperations) {
-      console.error(`Tamanho da sequência (${length}) deve ser maior que o número de operações (${amountOperations})`)
+      console.error(
+        `[sequence] Tamanho da sequência (${length}) deve ser maior que o nº de operações (${amountOperations})`,
+      )
       return
     }
- 
+
     const { exportedOperations, operators } = useSortOperation(amountOperations, maxOperator)
     if (!exportedOperations.length) {
-      console.error('Nenhuma operação foi gerada.')
+      console.error('[sequence] Nenhuma operação foi gerada.')
       return
     }
- 
+
     const startNumber = Math.floor(Math.random() * maxStart) + 1
     const rawSeq = [startNumber]
     let opIndex = 0
- 
+
     while (rawSeq.length <= length) {
       if (opIndex >= exportedOperations.length) opIndex = 0
       rawSeq.push(executeOperation(exportedOperations[opIndex], rawSeq.at(-1), operators[opIndex]))
       opIndex++
     }
- 
+
     const built = rawSeq.map((value, i) => ({
       id: i + 1,
       object: { id: i + 1, value, name: 'number' },
     }))
- 
+
     const discoverCount = Math.min(numberDiscover, built.length)
     const randomIndexes = getRandomIndexes(built.length, discoverCount)
     const correct = Array(built.length).fill(null)
- 
+
     for (const idx of randomIndexes) {
       correct[idx] = built[idx].object.id
-      built[idx].object.name = 'discover'
+      built[idx].object = {
+        ...built[idx].object,
+        name: 'discover',
+        icon: 'mdi mdi-help',
+      }
     }
- 
-    const hiddenNumbers = randomIndexes.map((idx) => ({
-      id: idx + 1,
+
+    const correctValues = new Set(randomIndexes.map((idx) => rawSeq[idx]))
+    let choices = randomIndexes.map((idx) => ({
+      id: built[idx].object.id,
       value: rawSeq[idx],
       name: 'number',
     }))
- 
+
+    const visibleIndexes = built.map((_, i) => i).filter((i) => !randomIndexes.includes(i))
+
+    for (const i of shuffle(visibleIndexes)) {
+      if (choices.length >= numberDiscover + 3) break
+      const val = rawSeq[i]
+      if (!correctValues.has(val)) {
+        choices.push({ id: built[i].object.id, value: val, name: 'number' })
+        correctValues.add(val)
+      }
+    }
+
     sequence.value = built
     correctResponses.value = correct
-    finalChoices.value = shuffle(hiddenNumbers)
+    finalChoices.value = shuffle(choices)
     responses.value = []
     selectedChoice.value = null
+
+    console.log({
+      numberDiscover,
+      discoverCount,
+      randomIndexes,
+    })
   }
 
   return {

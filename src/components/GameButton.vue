@@ -5,6 +5,7 @@ const { id, name, icon, color, background, selected } = defineProps({
   id: Number,
   name: String,
   icon: String,
+  number: Number,
   color: String,
   background: String,
   selected: {
@@ -37,8 +38,8 @@ const buttonStyle = computed(() => {
     ]"
     @click="emits('select')"
   >
-    <span v-if="name === 'discover'" :class="[icon, 'text-6xl']"></span>
-    <div v-else
+    <span v-if="icon && name === 'discover'" :class="[icon, 'text-6xl']"></span>
+    <div v-else-if="icon"
       class="w-3/5 h-3/5"
       :style="{
         backgroundColor: color,
@@ -46,6 +47,9 @@ const buttonStyle = computed(() => {
         WebkitMask: `url(${icon}) no-repeat center / contain`
       }"
     ></div>
+    <div v-else class="text-3xl font-bold" :style="{
+      color: color
+    }">{{ number }}</div>
   </button>
 </template>
 
